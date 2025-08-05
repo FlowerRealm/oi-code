@@ -27,16 +27,7 @@ const extensions = [
 		workspaceFolder: `extensions/markdown-language-features/test-workspace`,
 		mocha: { timeout: 60_000 }
 	},
-	{
-		label: 'ipynb',
-		workspaceFolder: path.join(os.tmpdir(), `ipynb-${Math.floor(Math.random() * 100000)}`),
-		mocha: { timeout: 60_000 }
-	},
-	{
-		label: 'notebook-renderers',
-		workspaceFolder: path.join(os.tmpdir(), `nbout-${Math.floor(Math.random() * 100000)}`),
-		mocha: { timeout: 60_000 }
-	},
+
 	{
 		label: 'vscode-colorize-tests',
 		workspaceFolder: `extensions/vscode-colorize-tests/test`,

@@ -514,9 +514,6 @@ const esbuildMediaScripts = [
     'markdown-language-features/esbuild-notebook.js',
     'markdown-language-features/esbuild-preview.js',
     'markdown-math/esbuild.js',
-    'notebook-renderers/esbuild.js',
-    'ipynb/esbuild.js',
-    'simple-browser/esbuild-preview.js',
 ];
 async function webpackExtensions(taskName, isWatch, webpackConfigLocations) {
     const webpack = require('webpack');
@@ -618,4 +615,3 @@ async function buildExtensionMedia(isWatch, outputRoot) {
         outputRoot: outputRoot ? path_1.default.join(root, outputRoot, path_1.default.dirname(p)) : undefined
     })));
 }
-//# sourceMappingURL=extensions.js.map

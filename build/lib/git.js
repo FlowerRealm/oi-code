@@ -54,4 +54,3 @@ function getVersion(repo) {
     }
     return refs[ref];
 }
-//# sourceMappingURL=git.js.map

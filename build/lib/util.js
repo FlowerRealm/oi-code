@@ -311,4 +311,3 @@ function getElectronVersion() {
     const msBuildId = /^ms_build_id="(.*)"$/m.exec(npmrc)[1];
     return { electronVersion, msBuildId };
 }
-//# sourceMappingURL=util.js.map

@@ -54,4 +54,3 @@ function getProductionDependencies(folderPath) {
 if (require.main === module) {
     console.log(JSON.stringify(getProductionDependencies(root), null, '  '));
 }
-//# sourceMappingURL=dependencies.js.map

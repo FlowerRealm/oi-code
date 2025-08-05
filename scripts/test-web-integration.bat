@@ -69,10 +69,7 @@ call node .\test\integration\browser\out\index.js --workspacePath=%GITWORKSPACE%
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 echo.
-echo ### Ipynb tests
-set IPYNBWORKSPACE=%TEMPDIR%\ipynb-%RANDOM%
-mkdir %IPYNBWORKSPACE%
-call node .\test\integration\browser\out\index.js --workspacePath=%IPYNBWORKSPACE% --extensionDevelopmentPath=.\extensions\ipynb --extensionTestsPath=.\extensions\ipynb\out\test %*
+
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 echo.

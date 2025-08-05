@@ -46,4 +46,3 @@ function getVersion(root) {
     }
     return version;
 }
-//# sourceMappingURL=getVersion.js.map

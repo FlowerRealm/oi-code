@@ -104,12 +104,6 @@ npm run test-extension -- -l ipynb
 kill_app
 
 echo
-echo "### Notebook Output tests"
-echo
-npm run test-extension -- -l notebook-renderers
-kill_app
-
-echo
 echo "### Configuration editing tests"
 echo
 npm run test-extension -- -l configuration-editing

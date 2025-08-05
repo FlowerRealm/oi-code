@@ -13,6 +13,6 @@ package-lock.json
 preview-src/**
 webpack.config.js
 esbuild-notebook.js
-esbuild-preview.js
+
 .gitignore
 **/*.d.ts

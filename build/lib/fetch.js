@@ -138,4 +138,3 @@ function fetchGithub(repo, options) {
         }
     }));
 }
-//# sourceMappingURL=fetch.js.map

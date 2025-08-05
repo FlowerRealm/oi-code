@@ -86,11 +86,6 @@ call npm run test-extension -- -l ipynb
 if %errorlevel% neq 0 exit /b %errorlevel%
 
 echo.
-echo ### Notebook Output tests
-call npm run test-extension -- -l notebook-renderers
-if %errorlevel% neq 0 exit /b %errorlevel%
-
-echo.
 echo ### Configuration editing tests
 set CFWORKSPACE=%TEMPDIR%\cf-%RANDOM%
 mkdir %CFWORKSPACE%

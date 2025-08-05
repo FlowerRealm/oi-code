@@ -76,4 +76,3 @@ function createStatsStream(group, log) {
         this.emit('end');
     });
 }
-//# sourceMappingURL=stats.js.map
