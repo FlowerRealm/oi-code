@@ -1,7 +1,12 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
-import * as cp from 'child_process';
-import * as util from 'util';
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+// OI-Code 用户初始化面板扩展主入口
+import * as vscode from "vscode";
+import * as path from "path";
+import * as cp from "child_process";
+import * as util from "util";
 
 const exec = util.promisify(cp.exec);
 
@@ -84,7 +89,7 @@ async function configureLanguage(type: 'cpp' | 'python', settings: OiCodeSetting
             description: "扫描到的路径",
             detail: item.path // Store original path in detail
         }));
-        items.push({ label: `手动选择 ${type === 'cpp' ? 'g++' : 'Python'} 路径...`, iconPath: new vscode.ThemeIcon('folder-opened') });
+        items.push({ label: `手动选择 ${type === 'cpp' ? "g++" : "Python"} 路径...`, iconPath: new vscode.ThemeIcon('folder-opened') });
         items.push({ label: `帮我下载并配置...`, iconPath: new vscode.ThemeIcon('cloud-download') });
         items.push({ label: "暂不配置", iconPath: new vscode.ThemeIcon('circle-slash') });
 
@@ -96,33 +101,43 @@ async function configureLanguage(type: 'cpp' | 'python', settings: OiCodeSetting
                 const selection = quickPick.selectedItems[0];
                 if (selection) {
                     if (selection.description === "扫描到的路径") {
-                        settings[type] = { path: selection.detail || selection.label }; // Use detail for original path
-                        try { vscode.window.showInformationMessage(`${type} 环境已设置为: ${settings[type]?.path}`); } catch (e) { console.error(e); }
-                    } else if (selection.label.startsWith('手动选择')) {
+                        settings[type] = { path: selection.detail || selection.label };
+                        try {
+                            vscode.window.showInformationMessage(`${type} 环境已设置为: ${settings[type]?.path}`);
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    } else if (selection.label.startsWith("手动选择")) {
                         try {
                             const options: vscode.OpenDialogOptions = {
                                 canSelectMany: false,
-                                openLabel: '选择',
+                                openLabel: "选择",
                                 canSelectFiles: true,
-                                canSelectFolders: false,
+                                canSelectFolders: false
                             };
                             const uris = await vscode.window.showOpenDialog(options);
                             if (uris && uris.length > 0) {
                                 settings[type] = { path: uris[0].fsPath };
-                                try { vscode.window.showInformationMessage(`${type} 环境已设置为: ${uris[0].fsPath}`); } catch (e) { console.error(e); }
+                                try {
+                                    vscode.window.showInformationMessage(`${type} 环境已设置为: ${uris[0].fsPath}`);
+                                } catch (e) {
+                                    console.error(e);
+                                }
                             }
                         } catch (e) {
                             vscode.window.showErrorMessage(`手动选择 ${type} 路径时出错: ${e}`);
                         }
-                    } else if (selection.label.startsWith('帮我下载')) {
-                        // Simulate download and configuration
-                        panel.webview.postMessage({ command: 'initialization-output', output: `正在下载并配置 ${type === 'cpp' ? 'MinGW/Clang' : 'Python'}...
-` });
-                        await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate download time
-                        const simulatedPath = type === 'cpp' ? 'C:\\MinGW\\bin\\g++.exe' : '/usr/bin/python'; // Placeholder
+                    } else if (selection.label.startsWith("帮我下载")) {
+                        panel.webview.postMessage({ command: "initialization-output", output: `正在下载并配置 ${type === "cpp" ? "MinGW/Clang" : "Python"}...\n` });
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                        const simulatedPath = type === "cpp" ? "C:\\MinGW\\bin\\g++.exe" : "/usr/bin/python";
                         settings[type] = { path: simulatedPath };
-                        panel.webview.postMessage({ command: 'initialization-output', output: `  - ${type === 'cpp' ? 'MinGW/Clang' : 'Python'} 下载并配置完成。路径: ${simulatedPath}\n` });
-                        try { vscode.window.showInformationMessage(`已模拟下载并配置 ${type}。`); } catch (e) { console.error(e); }
+                        panel.webview.postMessage({ command: "initialization-output", output: `  - ${type === "cpp" ? "MinGW/Clang" : "Python"} 下载并配置完成。路径: ${simulatedPath}\n` });
+                        try {
+                            vscode.window.showInformationMessage(`已模拟下载并配置 ${type}。`);
+                        } catch (e) {
+                            console.error(e);
+                        }
                     }
                 }
                 quickPick.dispose();
@@ -139,7 +154,7 @@ async function configureLanguage(type: 'cpp' | 'python', settings: OiCodeSetting
 }
 
 function getTheme(kind: vscode.ColorThemeKind): string {
-    return (kind === vscode.ColorThemeKind.Dark || kind === vscode.ColorThemeKind.HighContrast) ? 'dark' : 'light';
+    return (kind === vscode.ColorThemeKind.Dark || kind === vscode.ColorThemeKind.HighContrast) ? "dark" : "light";
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -231,7 +246,7 @@ export function activate(context: vscode.ExtensionContext) {
                                 await vscode.workspace.getConfiguration().update('oi-code.cpp.compilerPath', settings.cpp.path, vscode.ConfigurationTarget.Global);
                                 // For C++, we primarily rely on cpptools extension to pick up the compiler
                                 // If a specific c_cpp_properties.json is needed, it's a more advanced step.
-                                await sendProgress(`  - C++ 编译器路径: ${settings.cpp.path} (已保存到 OI-Code 设置)\n`);
+                                await sendProgress(`  - C++ 编译器路径: ${settings.cpp.path}（已保存到 OI-Code 设置）\n`);
                             } catch (e) {
                                 await sendProgress(`  - C++ 编译器路径保存失败: ${e}\n`);
                                 console.error("Failed to save C++ compiler path", e);
@@ -240,7 +255,7 @@ export function activate(context: vscode.ExtensionContext) {
                         if (settings.python) {
                             try {
                                 await vscode.workspace.getConfiguration().update('python.defaultInterpreterPath', settings.python.path, vscode.ConfigurationTarget.Global);
-                                await sendProgress(`  - Python 解释器路径: ${settings.python.path} (已配置 Python 扩展)\n`);
+                                await sendProgress(`  - Python 解释器路径: ${settings.python.path}（已配置 Python 扩展）\n`);
                             } catch (e) {
                                 await sendProgress(`  - Python 解释器路径保存失败: ${e}\n`);
                                 console.error("Failed to save Python interpreter path", e);
@@ -313,7 +328,7 @@ export function activate(context: vscode.ExtensionContext) {
 async function getWebviewContent(context: vscode.ExtensionContext): Promise<string> {
     const htmlPath = vscode.Uri.file(path.join(context.extensionPath, 'src', 'init.html'));
     try {
-        const content = await vscode.workspace.fs.readFile(htmlPath); // Use readFile (async) 
+        const content = await vscode.workspace.fs.readFile(htmlPath); // Use readFile (async)
         return content.toString();
     } catch (e) {
         console.error("Failed to read init.html", e);
@@ -321,4 +336,4 @@ async function getWebviewContent(context: vscode.ExtensionContext): Promise<stri
     }
 }
 
-export function deactivate() {}
+export function deactivate() { }

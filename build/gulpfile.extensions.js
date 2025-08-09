@@ -29,6 +29,7 @@ const ext = require('./lib/extensions');
 // });
 const compilations = [
 	'extensions/configuration-editing/tsconfig.json',
+	'extensions/cph/tsconfig.json',
 	'extensions/css-language-features/client/tsconfig.json',
 	'extensions/css-language-features/server/tsconfig.json',
 	'extensions/debug-auto-launch/tsconfig.json',
@@ -56,6 +57,7 @@ const compilations = [
 	'extensions/microsoft-authentication/tsconfig.json',
 	'extensions/notebook-renderers/tsconfig.json',
 	'extensions/npm/tsconfig.json',
+	'extensions/oi-init/tsconfig.json',
 	'extensions/php-language-features/tsconfig.json',
 	'extensions/references-view/tsconfig.json',
 	'extensions/search-result/tsconfig.json',

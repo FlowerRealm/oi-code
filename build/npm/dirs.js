@@ -1,3 +1,10 @@
+/*
+ * @Author: FlowerRealm admin@flowerrealm.top
+ * @Date: 2025-08-06 10:44:27
+ * @LastEditors: FlowerRealm admin@flowerrealm.top
+ * @LastEditTime: 2025-08-06 13:20:24
+ * @FilePath: /oi-code/build/npm/dirs.js
+ */
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
@@ -13,6 +20,7 @@ const dirs = [
 	'extensions/configuration-editing',
 	'extensions/css-language-features',
 	'extensions/css-language-features/server',
+	'extensions/cph',
 	'extensions/debug-auto-launch',
 	'extensions/debug-server-ready',
 	'extensions/emmet',
@@ -36,6 +44,7 @@ const dirs = [
 	'extensions/microsoft-authentication',
 	'extensions/notebook-renderers',
 	'extensions/npm',
+	'extensions/oi-init',
 	'extensions/php-language-features',
 	'extensions/references-view',
 	'extensions/search-result',
