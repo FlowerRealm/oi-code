@@ -1,0 +1,58 @@
+{
+  "name": "oi-init",
+  "displayName": "OI Init",
+  "description": "Initial setup for OI IDE",
+  "version": "0.0.1",
+  "publisher": "your-publisher-name",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "oi-init.showWelcomePage",
+        "title": "显示 OI 初始化欢迎页面"
+      }
+    ],
+    "configuration": {
+      "title": "OI-Code Configuration",
+      "properties": {
+        "oi-code.cpp.compilerPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the C++ compiler (g++, clang, etc.) for OI-Code."
+        },
+        "oi-code.python.interpreterPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Python interpreter for OI-Code."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTests.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "typescript": "^5.1.6",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}

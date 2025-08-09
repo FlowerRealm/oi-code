@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OI-Code 初始化</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        html[data-theme='light'] { --pico-background-color: #f9f9f9; --pico-color: #111827; --pico-h1-color: #111827; --pico-muted-color: #6b7280; --pico-contrast: #1f2937; --pico-contrast-inverse: #ffffff; --pico-primary: #43a047; --pico-primary-inverse: #ffffff; --pico-card-background-color: #ffffff; --pico-card-border-color: #e5e7eb; }
+        html[data-theme='dark'] { --pico-background-color: #1e1e1e; --pico-color: #d4d4d4; --pico-h1-color: #ffffff; --pico-muted-color: #a5a5a5; --pico-contrast: #ffffff; --pico-contrast-inverse: #000000; --pico-primary: #60a5fa; --pico-primary-inverse: #000000; --pico-card-background-color: #252526; --pico-card-border-color: #3c3c3c; }
+        .hidden { display: none; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 2rem; }
+        .stepper { display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
+        .step { display: flex; flex-direction: column; align-items: center; padding: 0 1rem; color: var(--pico-muted-color); }
+        .step.active { color: var(--pico-contrast); }
+        .step-number { font-size: 0.8em; background-color: var(--pico-card-border-color); color: var(--pico-muted-color); border-radius: 50%; width: 2em; height: 2em; line-height: 2em; text-align: center; margin-bottom: 0.5rem; }
+        .step.active .step-number { background-color: var(--pico-primary); color: var(--pico-primary-inverse); }
+        .arrow { font-size: 2em; color: var(--pico-card-border-color); }
+        .nav-buttons button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content; /* Force width to content */
+            flex-grow: 0;
+            flex-shrink: 0;
+            --pico-form-element-spacing-vertical: 0.5rem;
+            --pico-form-element-spacing-horizontal: 1rem;
+        }
+        #terminal-output {
+            background-color: var(--pico-card-background-color);
+            border: 1px solid var(--pico-card-border-color);
+            padding: 1rem;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>欢迎使用 OI-Code</h1>
+            <p>请跟随以下步骤配置您的 OI 环境。</p>
+        </header>
+
+        <div class="stepper">
+            <div id="step-indicator-0" class="step active"><div class="step-number">1</div><strong>选择主题</strong></div>
+            <div class="arrow">→</div>
+            <div id="step-indicator-1" class="step"><div class="step-number">2</div><strong>选择语言</strong></div>
+            <div class="arrow">→</div>
+            <div id="step-indicator-2" class="step"><div class="step-number">3</div><strong>选择工作区</strong></div>
+            <div class="arrow">→</div>
+            <div id="step-indicator-3" class="step"><div class="step-number">4</div><strong>完成</strong></div>
+        </div>
+
+        <section id="step-content">
+            <div id="content-0" class="content-panel">
+                <article>
+                    <h2>第一步：选择一个颜色主题</h2>
+                    <p>选择一个您喜欢的主题来开始编程，这会立即生效。</p>
+                    <button id="select-theme-btn">打开主题选择器</button>
+                </article>
+            </div>
+            <div id="content-1" class="content-panel hidden">
+                <article>
+                    <h2>第二步：选择您的常用语言</h2>
+                    <div id="language-selection">
+                        <p>我们会根据您的选择，为您配置编译器。</p>
+                        <label for="lang-cpp"><input type="checkbox" id="lang-cpp" name="language" value="cpp"> C++</label>
+                        <label for="lang-python"><input type="checkbox" id="lang-python" name="language" value="python"> Python</label>
+                    </div>
+                     <div id="language-loading" class="hidden">
+                        <p><strong>正在配置语言环境...</strong></p>
+                        <p>请在 VS Code 窗口顶部的弹出框中完成操作。</p>
+                    </div>
+                </article>
+            </div>
+            <div id="content-2" class="content-panel hidden">
+                <article>
+                    <h2>第三步：选择工作区</h2>
+                    <p>请选择一个文件夹作为您的工作区。</p>
+                    <button id="select-folder-btn">选择文件夹</button>
+                </article>
+            </div>
+            <div id="content-3" class="content-panel hidden">
+                <article>
+                    <h2>正在初始化 OI-Code...</h2>
+                    <progress id="initialization-progress" value="0" max="100"></progress>
+                    <span id="progress-text">0%</span>
+                    <p>请稍候，我们正在为您准备环境。</p>
+                    <div id="terminal-output"></div>
+                    <button id="cancel-initialization-btn" class="secondary">取消</button>
+                </article>
+            </div>
+            <div id="content-4" class="content-panel hidden">
+                <article>
+                    <h2>初始化完成！</h2>
+                    <p>您的 OI-Code 环境已准备就绪。</p>
+                    <div class="grid">
+                        <button id="experience-now-btn">立即体验</button>
+                        <button id="continue-config-btn" class="secondary">继续配置功能</button>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <button id="prev-btn" class="secondary" disabled><i data-feather="arrow-left"></i> 上一步</button>
+            <button id="next-btn" class="secondary">下一步 <i data-feather="arrow-right"></i></button>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            feather.replace();
+
+            let vscode;
+            try {
+                vscode = acquireVsCodeApi();
+            } catch (e) {
+                console.warn("Running in browser mode. VS Code API not available.");
+            }
+
+            function postCommand(command, data = {}) {
+                if (vscode) {
+                    try {
+                        vscode.postMessage({ command, ...data });
+                        return true; // Message sent successfully
+                    } catch (e) {
+                        console.error(`Error sending message to extension for command '${command}':`, e);
+                        return false; // Failed to send
+                    }
+                } else {
+                    // Browser debugging mode: simulate actions and output errors
+                    const errorMessage = `命令 '${command}' 在浏览器模式下无法执行。`;
+                    terminalOutputDiv.textContent += `[错误] ${errorMessage}\n`;
+                    terminalOutputDiv.scrollTop = terminalOutputDiv.scrollHeight;
+                    console.warn(errorMessage, data);
+
+                    // Simulate progress for certain commands
+                    if (command === 'configure-languages') {
+                        terminalOutputDiv.textContent += `模拟语言配置完成。\n`;
+                        initializationProgressBar.value = 50;
+                        progressText.textContent = `50%`;
+                        setTimeout(() => {
+                            currentStep++;
+                            updateUI();
+                        }, 500);
+                    } else if (command === 'initialize') {
+                        terminalOutputDiv.textContent += `模拟初始化开始。\n`;
+                        let simulatedProgress = 0;
+                        const interval = setInterval(() => {
+                            simulatedProgress += 20;
+                            if (simulatedProgress <= 100) {
+                                terminalOutputDiv.textContent += `模拟进度: ${simulatedProgress}%\n`;
+                                initializationProgressBar.value = simulatedProgress;
+                                progressText.textContent = `${simulatedProgress}%`;
+                            } else {
+                                clearInterval(interval);
+                                terminalOutputDiv.textContent += `模拟初始化完成。\n`;
+                                currentStep = contentPanels.length - 1; // Move to final completion screen
+                                updateUI();
+                            }
+                            terminalOutputDiv.scrollTop = terminalOutputDiv.scrollHeight;
+                        }, 300);
+                    }
+                    return false; // Not sent (in browser mode)
+                }
+            }
+
+            let currentStep = 0;
+            const contentPanels = document.querySelectorAll('.content-panel');
+            const stepIndicators = document.querySelectorAll('.step');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            const languageSelectionDiv = document.getElementById('language-selection');
+            const languageLoadingDiv = document.getElementById('language-loading');
+            const terminalOutputDiv = document.getElementById('terminal-output');
+            const initializationProgressBar = document.getElementById('initialization-progress');
+            const progressText = document.getElementById('progress-text');
+
+            const experienceNowBtn = document.getElementById('experience-now-btn');
+            const continueConfigBtn = document.getElementById('continue-config-btn');
+            const cancelInitializationBtn = document.getElementById('cancel-initialization-btn');
+
+            function getSelectedLanguages() {
+                const selected = [];
+                const cppCheckbox = document.getElementById('lang-cpp');
+                const pythonCheckbox = document.getElementById('lang-python');
+
+                if (cppCheckbox && cppCheckbox.checked) selected.push('cpp');
+                if (pythonCheckbox && pythonCheckbox.checked) selected.push('python');
+                return selected;
+            }
+
+            function updateUI() {
+                stepIndicators.forEach((indicator, index) => indicator.classList.toggle('active', index === currentStep));
+                contentPanels.forEach((panel, index) => panel.classList.toggle('hidden', index !== currentStep));
+
+                prevBtn.disabled = currentStep === 0 || currentStep === contentPanels.length - 1; // Disable prev on first and final screen
+                nextBtn.disabled = currentStep === contentPanels.length - 1; // Disable next on final screen
+
+                // Specific logic for language selection step (currentStep === 1)
+                if (currentStep === 1) {
+                    // Ensure language selection UI is visible and loading is hidden
+                    if (languageSelectionDiv) languageSelectionDiv.classList.remove('hidden');
+                    if (languageLoadingDiv) languageLoadingDiv.classList.add('hidden');
+                    if (getSelectedLanguages().length === 0) {
+                        nextBtn.disabled = true; // Disable if no language selected
+                    }
+                } else if (currentStep === contentPanels.length - 2) { // Initialization progress screen
+                    // No change to next/prev disabled state here, handled by extension
+                }
+
+                if (currentStep === contentPanels.length - 2) { // Initialization progress screen
+                    nextBtn.innerHTML = `完成 <i data-feather="check"></i>`; // This button will be disabled by extension
+                } else if (currentStep === contentPanels.length - 1) { // Final completion screen
+                    prevBtn.classList.add('hidden');
+                    nextBtn.classList.add('hidden');
+                } else {
+                    nextBtn.innerHTML = `下一步 <i data-feather="arrow-right"></i>`;
+                }
+                feather.replace();
+            }
+
+            // Ensure elements exist before adding event listeners
+            const langCppCheckbox = document.getElementById('lang-cpp');
+            const langPythonCheckbox = document.getElementById('lang-python');
+
+            if (langCppCheckbox) {
+                langCppCheckbox.addEventListener('change', updateUI);
+            }
+            if (langPythonCheckbox) {
+                langPythonCheckbox.addEventListener('change', updateUI);
+            }
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateUI();
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                switch (currentStep) {
+                    case 0: // Theme selection step
+                    case 2: // Workspace selection step
+                        currentStep++;
+                        updateUI();
+                        break;
+                    case 1: // Language selection step
+                        const selectedLangs = getSelectedLanguages();
+                        if (selectedLangs.length === 0) {
+                            alert("请至少选择一种您使用的语言。"); // Simple alert for browser debugging
+                            return;
+                        }
+                        postCommand('configure-languages', { languages: selectedLangs });
+                        if (languageSelectionDiv) languageSelectionDiv.classList.add('hidden');
+                        if (languageLoadingDiv) languageLoadingDiv.classList.remove('hidden');
+                        break;
+                    case 3: // Initialization progress screen
+                        postCommand('initialize');
+                        break;
+                    case 4: // Final completion screen
+                        // Buttons are hidden
+                        break;
+                    default:
+                        // Fallback for other steps if any
+                        currentStep++;
+                        updateUI();
+                        break;
+                }
+            });
+            
+            document.getElementById('select-theme-btn').addEventListener('click', () => postCommand('select-theme'));
+            document.getElementById('select-folder-btn').addEventListener('click', () => postCommand('select-folder'));
+
+            if (experienceNowBtn) experienceNowBtn.addEventListener('click', () => postCommand('open-workspace'));
+            if (continueConfigBtn) continueConfigBtn.addEventListener('click', () => postCommand('continue-config'));
+            if (cancelInitializationBtn) cancelInitializationBtn.addEventListener('click', () => postCommand('cancel-initialization'));
+
+            window.addEventListener('message', event => {
+                const message = event.data;
+                switch (message.command) {
+                    case 'set-theme':
+                        document.documentElement.setAttribute('data-theme', message.theme);
+                        break;
+                    case 'go-to-step':
+                        currentStep = message.step;
+                        if (languageSelectionDiv) languageSelectionDiv.classList.remove('hidden');
+                        if (languageLoadingDiv) languageLoadingDiv.classList.add('hidden');
+                        updateUI();
+                        break;
+                    case 'initialization-output':
+                        if (terminalOutputDiv) {
+                            terminalOutputDiv.textContent += message.output;
+                            terminalOutputDiv.scrollTop = terminalOutputDiv.scrollHeight; // Auto-scroll
+                        }
+                        break;
+                    case 'initialization-progress':
+                        if (initializationProgressBar) initializationProgressBar.value = message.progress;
+                        if (progressText) progressText.textContent = `${message.progress}%`;
+                        break;
+                    case 'initialization-complete':
+                        currentStep = contentPanels.length - 1; // Move to final completion screen
+                        updateUI();
+                        break;
+                }
+            });
+
+            updateUI();
+            postCommand('get-theme');
+        });
+    </script>
+</body>
+</html>

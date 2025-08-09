@@ -1,0 +1,6 @@
+[submodule "extensions/cph"]
+	path = extensions/cph
+	url = https://github.com/agrawal-d/cph.git
+[submodule "extensions/github-theme"]
+	path = extensions/github-theme
+	url = https://github.com/primer/github-vscode-theme.git
